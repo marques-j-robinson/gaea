@@ -1,18 +1,28 @@
+# Python Lib
 import sys
-from os import path
+import os
 
+# Third Party
 import boto3
 from PIL import Image
 
-S3 = boto3.client('s3', region_name='us-east-2')
+# Local
+from lib.twitter import Twitter
+
+# Basic Definitions
 BUCKET = 'mrp-paintings'
 IMG_FILE = 'original.jpg'
 SM_IMG_FILE = 'small.jpg'
 BASE_WIDTH = 300
+DEFAULT_STATUS = '#bobross #landscapepainting #oilpainting'
+
+# Third Party Clients
+S3 = boto3.client('s3', region_name='us-east-2')
+TW = Twitter()
 
 
 def image_check():
-    return path.exists(IMG_FILE)
+    return os.path.exists(IMG_FILE)
 
 
 def resize():
@@ -37,6 +47,8 @@ def main(name):
         return
     resize()
     s3_upload(name)
+    status = f'{name} {DEFAULT_STATUS}'
+    TW.tweet(SM_IMG_FILE, status)
 
 
 if __name__ == '__main__':
