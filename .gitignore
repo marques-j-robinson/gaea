@@ -1,3 +1,4 @@
 .env
 *.jpg
+*.jpeg
 **__pycache__/
