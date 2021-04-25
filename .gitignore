@@ -1,4 +1,5 @@
+config/
 .env
-*.jpg
-*.jpeg
+*.jpg.*
+*.jpeg.*
 **__pycache__/
