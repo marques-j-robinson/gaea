@@ -1,22 +1,12 @@
 import os
-import tweepy
-from instabot import Bot as IgBot
-from dotenv import load_dotenv
-load_dotenv()
+import requests
+
+from lib.twitter import tweet
+from lib.instagram import post as ig_post
 
 
 IMG_FILE = 'original.jpg'
 DEFAULT_MESSAGE = '#bobross #landscapepainting #oilpainting'
-
-# Twitter auth values
-CONSUMER_KEY = os.environ.get('TW_CONSUMER_KEY')
-CONSUMER_SECRET = os.environ.get('TW_CONSUMER_SECRET')
-ACCESS_TOKEN = os.environ.get('TW_ACCESS_TOKEN')
-ACCESS_TOKEN_SECRET = os.environ.get('TW_ACCESS_TOKEN_SECRET')
-
-# Instagram auth value
-IG_USERNAME = os.environ.get('IG_USERNAME')
-IG_PW = os.environ.get('IG_PASSWORD')
 
 
 def main():
@@ -25,24 +15,9 @@ def main():
         print('Exiting...')
         return
     title = input('Enter Title: ')
-    status = f'{title} {DEFAULT_MESSAGE}'
-
-    # Auth
-    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-    auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-    TW = tweepy.API(auth)
-    IG = IgBot()
-    IG.login(username=IG_USERNAME,
-             password=IG_PW)
-    try:
-        TW.verify_credentials()
-    except:
-        print('TW_AUTH ERROR')
-
-    # Post
-    print('TW_POSTING_IMAGE...')
-    TW.update_with_media(IMG_FILE, status)
-    IG.upload_photo(IMG_FILE, caption=status)
+    msg = f'{title} {DEFAULT_MESSAGE}'
+    tweet(IMG_FILE, msg)
+    ig_post(IMG_FILE, msg)
 
 
 if __name__ == '__main__':
