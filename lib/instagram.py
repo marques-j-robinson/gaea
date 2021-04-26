@@ -10,5 +10,5 @@ password = os.environ.get('IG_PASSWORD')
 
 def post(img_path, caption):
     api = Bot()
-    api.login(username, password)
+    api.login(username=username, password=password)
     api.upload_photo(img_path, caption)
